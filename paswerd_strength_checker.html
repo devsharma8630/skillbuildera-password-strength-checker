@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Strength Checker</title>
+</head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    background: #fff;
+    padding: 25px;
+    width: 350px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.meter {
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#strengthBar {
+    height: 100%;
+    width: 0%;
+    transition: 0.3s;
+}
+
+#strengthText {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+#tips {
+    text-align: left;
+    font-size: 14px;
+}
+</style>
+<body>
+<div class="container">
+    <h2>Password Strength Checker</h2>
+    <input type="password" id="password" placeholder="Enter your password" onkeyup="checkPassword()">
+
+    <div class="meter">
+        <div id="strengthBar"></div>
+    </div>
+
+    <p id="strengthText"></p>
+
+    <ul id="tips"></ul>
+</div>
+</body>
+<script>
+    function checkPassword() {
+    let pass = document.getElementById("password").value;
+    let bar = document.getElementById("strengthBar");
+    let text = document.getElementById("strengthText");
+    let tips = document.getElementById("tips");
+
+    let strength = 0;
+    tips.innerHTML = "";
+
+    if (pass.length >= 8) strength++;
+    else tips.innerHTML += "<li>Use at least 8 characters</li>";
+
+    if (/[A-Z]/.test(pass)) strength++;
+    else tips.innerHTML += "<li>Add uppercase letters</li>";
+
+    if (/[a-z]/.test(pass)) strength++;
+    else tips.innerHTML += "<li>Add lowercase letters</li>";
+
+    if (/[0-9]/.test(pass)) strength++;
+    else tips.innerHTML += "<li>Add numbers</li>";
+
+    if (/[^A-Za-z0-9]/.test(pass)) strength++;
+    else tips.innerHTML += "<li>Add special characters</li>";
+
+    let percent = (strength / 5) * 100;
+    bar.style.width = percent + "%";
+
+    if (strength <= 2) {
+        bar.style.background = "red";
+        text.innerHTML = "Weak Password";
+    } else if (strength <= 4) {
+        bar.style.background = "orange";
+        text.innerHTML = "Medium Password";
+    } else {
+        bar.style.background = "green";
+        text.innerHTML = "Strong Password";
+    }
+}
+</script>
+</html>
